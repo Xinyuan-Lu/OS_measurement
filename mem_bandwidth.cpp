@@ -26,29 +26,49 @@ int main(int ac, char **av){
 	register int* intBuffer = (int*) valloc(256*sizeof(int)*loops_needed_for_1GB); // 1 kb * 1024 * 1024 = 1GB
 
 	//Important. 
+	int* record = intBuffer;
 	for(int i = 0; i < 256*loops_needed_for_1GB; i++){
 		intBuffer[i] = 0;
 	}
 	register int sum = 0;
-	
-	struct timeval start_time_s, end_time_s;
-	gettimeofday(&start_time_s, 0);
-	//since we have prefetch overhead, and the cache line is 64 bytes, then we only needs to read every 64 bytes / 4 bytes.
+	//since we have pre-fetch overhead, and the cache line is 64 bytes, then we only needs to read every 64 bytes / 4 bytes.
 
 	uint64_t start_time = RDTSC();
-
 	while(loops_needed_for_1GB --){
 		sum += intBuffer[0] + intBuffer[16] + intBuffer[32] + intBuffer[48] + intBuffer[64] + intBuffer[80] + intBuffer[96] + intBuffer[112] + intBuffer[128] + \
 		intBuffer[144] + intBuffer[160] + intBuffer[176] + intBuffer[192] + intBuffer[208] + intBuffer[224] + intBuffer[240];
 		intBuffer += 256;
 	}
 	uint64_t end_time = RDTSC();
+	printf("Read speed is %.2f GB/s \n", 1/((end_time-start_time-3*1024*1024)/(1000000000*2.2)));
+	loops_needed_for_1GB = 1024*1024;
 
-	gettimeofday(&end_time_s, 0);
-	printf("%.2f\n", (end_time_s.tv_usec - start_time_s.tv_usec)/1000000.0);
-	// Need to deduct the forloop overhead. 
-	printf("%ld, %ld %d\n", (end_time-start_time), (end_time-start_time-3*1024*1024), 3*1024*1024);
-	printf("%.2f G\n", 1/((end_time-start_time-3*1024*1024)/(1000000000*2.2)));
+	intBuffer = record;
+	start_time = RDTSC();
+	while(loops_needed_for_1GB -- ){
+		intBuffer[0] = 0;
+		intBuffer[16] = 0;
+		intBuffer[32] = 0;
+		intBuffer[48] = 0;
+		intBuffer[64] = 0;
+		intBuffer[80] = 0;
+		intBuffer[96] = 0;
+		intBuffer[112] = 0;
+		intBuffer[128] = 0;
+		intBuffer[144] = 0;
+		intBuffer[160] = 0;
+		intBuffer[176] = 0;
+		intBuffer[192] = 0;
+		intBuffer[208] = 0;
+		intBuffer[224] = 0;
+		intBuffer[240] = 0;
+		intBuffer += 256;
+	}	
+	end_time = RDTSC();
+	printf("Write speed is %.2f GB/s \n", 1/((end_time-start_time-3*1024*1024)/(1000000000*2.2)));
+	free(record);
+
+	// Need to use sum in order to makes sure while loop exist.
 	if(sum != 0){printf("(Something wrong)\n");}
 	return 0;
 }
