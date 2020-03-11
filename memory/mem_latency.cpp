@@ -47,7 +47,7 @@ int main(int argc, char const *argv[])
 	}
 
 
-	cout << cacheAccessTime(16, 1024) << endl;
+	cout << cacheAccessTime(512, 32) << endl;
 
 	//latency_test(size_array[19], myfile);
 	myfile.close();
