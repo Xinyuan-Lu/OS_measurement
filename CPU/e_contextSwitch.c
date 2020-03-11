@@ -9,7 +9,7 @@
 
 int NUM_LOOPS = 10000;
 
-uint64_t rdtsc() {
+u_int64_t rdtsc() {
   return __rdtsc();
 }
 
@@ -18,7 +18,7 @@ void measureContextSwitch() {
   // cpu_set_t cpu_set;
   // CPU_ZERO(&cpu_set);
   // CPU_SET(0, &cpu_set);
-  uint64_t start, end;
+  u_int64_t start, end;
 
   int pipefd1[2], pipefd2[2];
 

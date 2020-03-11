@@ -7,7 +7,7 @@
 
 int NUM_LOOPS = 10000;
 
-uint64_t rdtsc() {
+u_int64_t rdtsc() {
   return __rdtsc();
 }
 
@@ -21,7 +21,7 @@ void procedure6(int a, int b, int c, int d, int e, int f) {;}
 void procedure7(int a, int b, int c, int d, int e, int f, int g) {;}
 
 void measureProc0() {
-  uint64_t start, end;
+  u_int64_t start, end;
   start = rdtsc();
   for (int i = 0; i < NUM_LOOPS; i++) {
     procedure0();
@@ -31,7 +31,7 @@ void measureProc0() {
 }
 
 void measureProc1() {
-  uint64_t start, end;
+  u_int64_t start, end;
   start = rdtsc();
   for (int i = 0; i < NUM_LOOPS; i++) {
     procedure1(0);
@@ -41,7 +41,7 @@ void measureProc1() {
 }
 
 void measureProc2() {
-  uint64_t start, end;
+  u_int64_t start, end;
   start = rdtsc();
   for (int i = 0; i < NUM_LOOPS; i++) {
     procedure2(0,0);
@@ -51,7 +51,7 @@ void measureProc2() {
 }
 
 void measureProc3() {
-  uint64_t start, end;
+  u_int64_t start, end;
   start = rdtsc();
   for (int i = 0; i < NUM_LOOPS; i++) {
     procedure3(0,0,0);
@@ -61,7 +61,7 @@ void measureProc3() {
 }
 
 void measureProc4() {
-  uint64_t start, end;
+  u_int64_t start, end;
   start = rdtsc();
   for (int i = 0; i < NUM_LOOPS; i++) {
     procedure4(0,0,0,0);
@@ -71,7 +71,7 @@ void measureProc4() {
 }
 
 void measureProc5() {
-  uint64_t start, end;
+  u_int64_t start, end;
   start = rdtsc();
   for (int i = 0; i < NUM_LOOPS; i++) {
     procedure5(0,0,0,0,0);
@@ -81,7 +81,7 @@ void measureProc5() {
 }
 
 void measureProc6() {
-  uint64_t start, end;
+  u_int64_t start, end;
   start = rdtsc();
   for (int i = 0; i < NUM_LOOPS; i++) {
     procedure6(0,0,0,0,0,0);
@@ -91,7 +91,7 @@ void measureProc6() {
 }
 
 void measureProc7() {
-  uint64_t start, end;
+  u_int64_t start, end;
   start = rdtsc();
   for (int i = 0; i < NUM_LOOPS; i++) {
     procedure7(0,0,0,0,0,0,0);

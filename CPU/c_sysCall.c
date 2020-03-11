@@ -8,12 +8,12 @@
 
 int NUM_LOOPS = 10000;
 
-uint64_t rdtsc() {
+u_int64_t rdtsc() {
   return __rdtsc();
 }
 
 void measureSysCall() {
-  uint64_t start, end;
+  u_int64_t start, end;
   
   int fd = open("./syscall.txt", O_CREAT|O_TRUNC, S_IRWXU);
 

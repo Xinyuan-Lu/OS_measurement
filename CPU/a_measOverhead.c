@@ -2,20 +2,27 @@
 #include <unistd.h>
 #include <stdlib.h>
 
+#include <sys/types.h>
+
 // access to rdtsc
-#include <x86intrin.h>
+//#include <x86intrin.h>
 
-int NUM_LOOPS = 100000;
+int NUM_LOOPS = 100000000;
 
-uint64_t rdtsc() {
-  return __rdtsc();
-}
+static inline volatile u_int64_t rdtsc() {
+   register u_int64_t TSC asm("eax");
+   register u_int64_t EDX asm("edx");
+   asm volatile (".byte 15, 49" : : : "eax", "edx");
+   return (EDX<<32) + TSC;
+};
+
 
 void measureForLoop() {
-  uint64_t start, end;
+  u_int64_t start, end;
 
   start = rdtsc();
   for (int i = 0; i < NUM_LOOPS; i++) {
+    //printf("For loop Overhead: %d cycles\n", 22);
     ;
   }
   end = rdtsc();
@@ -23,11 +30,11 @@ void measureForLoop() {
 }
 
 void measureReading() {
-  uint64_t start, end, temp;
+  u_int64_t start, end;
 
   start = rdtsc();
   for (int i = 0; i < NUM_LOOPS; i++) {
-    temp = rdtsc();
+    rdtsc();
   }
   end = rdtsc();
   printf("Reading Overhead: %f cycles\n", (double)(end-start) / NUM_LOOPS);

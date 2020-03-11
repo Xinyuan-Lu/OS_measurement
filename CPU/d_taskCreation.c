@@ -9,20 +9,18 @@
 
 int NUM_LOOPS = 10000;
 
-uint64_t rdtsc() {
+u_int64_t rdtsc() {
   return __rdtsc();
 }
 
 void measureProcCreate() {
-  uint64_t start, end;
+  u_int64_t start, end;
 
   start = rdtsc();
   for (int i = 0; i < NUM_LOOPS; i++) {
     int rc = fork();
     if (rc == 0) {
       exit(0);
-    } else if (rc > 0) {
-      wait(NULL);
     }
   }
   end = rdtsc();
@@ -34,7 +32,7 @@ void *thread_function() {
 }
 
 void measureThreadCreate() {
-  uint64_t start, end;
+  u_int64_t start, end;
   pthread_t thread;
 
   start = rdtsc();
