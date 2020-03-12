@@ -14,10 +14,15 @@ int blocksPerMB = 256;
 
 double read_file(int mbToRead){
   struct timeval start, end;
-  int bufferSize = mbSize;
-  char *buffer = (char *) malloc(bufferSize);
+  int bufferSize = blockSize;
+  char *buffer;
 
-  int fd = open("1", O_RDONLY);
+  int fd = open("1", __O_DIRECT);
+  posix_memalign((void*)&buffer, blockSize, blockSize);
+  for (int i = 0; i < mbToRead; i++) {
+    read(fd, buffer, bufferSize);
+  }
+  lseek(fd, 0, SEEK_SET);
 
   gettimeofday(&start, NULL);
   for (int i = 0; i < mbToRead; i++) {
@@ -39,6 +44,5 @@ double read_file(int mbToRead){
 int main(int argc, char *argv[]) {
   for(int i = 1; i<=1024*16; i*= 2){
     double perBT = read_file(i);
-
   }
 }
