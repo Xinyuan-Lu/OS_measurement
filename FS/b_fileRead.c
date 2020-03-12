@@ -22,8 +22,8 @@ void sequentialRead(char *filename, int mbToRead) {
   char *buffer;
 
   // bypass file cache with O_DIRECT
-  // int fd = open(filename, O_RDONLY | O_DIRECT);
-  int fd = open(filename, O_RDONLY);
+  int fd = open(filename, O_RDONLY | __O_DIRECT);
+  // int fd = open(filename, O_RDONLY);
   posix_memalign((void*)&buffer, mbSize, mbSize);
 
   gettimeofday(&start, NULL);

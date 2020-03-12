@@ -8,12 +8,13 @@
 //#include <x86intrin.h>
 
 int NUM_LOOPS = 100000000;
+float for_loop_overhead = 0;
 
 static inline volatile u_int64_t rdtsc() {
    register u_int64_t TSC asm("eax");
    register u_int64_t EDX asm("edx");
    asm volatile (".byte 15, 49" : : : "eax", "edx");
-   return (EDX<<32) + TSC;
+   return (EDX<<32) ^ TSC;
 };
 
 
@@ -27,6 +28,7 @@ void measureForLoop() {
   }
   end = rdtsc();
   printf("For loop Overhead: %f cycles\n", (double)(end-start) / NUM_LOOPS);
+  for_loop_overhead = (double)(end-start) / NUM_LOOPS;
 }
 
 void measureReading() {
@@ -37,7 +39,7 @@ void measureReading() {
     rdtsc();
   }
   end = rdtsc();
-  printf("Reading Overhead: %f cycles\n", (double)(end-start) / NUM_LOOPS);
+  printf("Reading Overhead: %f cycles\n", (double)(end-start) / NUM_LOOPS - for_loop_overhead);
 }
 
 int main(int argc, char *argv[]) {

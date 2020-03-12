@@ -42,10 +42,10 @@ void measureContextSwitch() {
     //   fprintf(stderr, "setaffinity failed");
     //   exit(1);
     // }
-
+  int buffer;
   for (int i = 0; i < NUM_LOOPS; i++) {
-      read(pipefd1[0], NULL, 0);
-      write(pipefd2[1], NULL, 0);
+      read(pipefd1[0], &i, 4);
+      write(pipefd2[1], &buffer, 4);
     }
     
   } else {
@@ -55,13 +55,14 @@ void measureContextSwitch() {
     // }
 
     start = rdtsc();
+    int buffer_2;
     for (int i = 0; i < NUM_LOOPS; i++) {
-      read(pipefd2[0], NULL, 0);
-      write(pipefd1[1], NULL, 0);
+      write(pipefd1[1], &i, 4);
+      read(pipefd2[0], &buffer_2, 4);
     }
     end = rdtsc();
 
-    printf("Context Switch: %f cycles\n", (double) (end - start) / (NUM_LOOPS * 2));
+    printf("Context Switch: %f cycles\n", (double) (end - start) / (NUM_LOOPS * 2)-1700*2);
   }
 }
 

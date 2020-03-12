@@ -12,8 +12,8 @@ int main(int argc, char *argv[]) {
   struct timeval start, end;
   char *buffer;
 
-  // int fd = open(filename, O_RDONLY | O_DIRECT);
-  int fd = open(argv[1], O_RDONLY);
+   int fd = open(argv[1], O_RDONLY | __O_DIRECT);
+  //int fd = open(argv[1], O_RDONLY);
   posix_memalign((void*)&buffer, blockSize, blockSize);
 
   gettimeofday(&start, NULL);

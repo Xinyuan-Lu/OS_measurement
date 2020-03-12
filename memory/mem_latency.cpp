@@ -46,45 +46,15 @@ int main(int argc, char const *argv[])
 		size_array.push_back(1<<i);
 	}
 
-
-	cout << cacheAccessTime(512, 32) << endl;
+	cout << "L1 cache latency" << cacheAccessTime(24, 16) << endl;
+	cout << "L2 cache latency" << cacheAccessTime(128, 64) << endl;
+	cout << "L3 cache latency" << cacheAccessTime(1024*6, 128) << endl;
+	cout << "dram cache latency" << cacheAccessTime(1024*512, 16) << endl;
 
 	//latency_test(size_array[19], myfile);
 	myfile.close();
 	return 0;
 }
-
-double latency_test(int memSize, ofstream &output){
-	uint64_t total_amount_time = 0;
-	int numberOfInt = (memSize * 1024)/sizeof(int);
-	int* vMem = (int*) valloc (memSize * 1024);
-
-	// Map vmem to actual memory, L1, L2, L3, or Memory.fixedStride
-	// So, we accessed every single element in the virtual memory
-	// in order to preheat the cache.
-	for(int i = 0; i < numberOfInt; i++){
-		vMem[i] = i%1024;
-	}
-	cout << "Number of int initialized: " << numberOfInt << endl << "Size of memory: "<< memSize << endl;
-	uint64_t start_time, end_time, diff_time;
-	for(register int i = 0; i < ITER_TIMES; i ++){
-		
-		int x = 0;
-		start_time = RDTSC();
-		for(int j = 0; j < numberOfInt; j++){
-			x = vMem[i];
-		}
-		end_time = RDTSC();
-		diff_time = end_time - start_time;
-
-		total_amount_time += (diff_time/numberOfInt);
-	}
-	cout << diff_time << endl;
-	// This will return average access time of whatever level cache it is.
-	std::cout << total_amount_time << endl;
-	return total_amount_time / ITER_TIMES * 1.0;
-}
-
 
 double cacheAccessTime(int size, int strideLength)
 {
@@ -93,7 +63,7 @@ double cacheAccessTime(int size, int strideLength)
     length = strideLength / 4;   
     num = size * 1024 / 4;
     cout << num << endl;
-    int index;
+    int index = 0;
     A[0] = 0;
     for (int i = 0; i < num; i++) {
         

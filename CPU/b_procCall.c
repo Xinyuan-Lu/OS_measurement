@@ -5,14 +5,14 @@
 // access to rdtsc
 #include <x86intrin.h>
 
-int NUM_LOOPS = 10000;
+int NUM_LOOPS = 100000;
 
 u_int64_t rdtsc() {
   return __rdtsc();
 }
 
 void procedure0() {;}
-void procedure1(int a) {;}
+void procedure1(int a) {a=a;}
 void procedure2(int a, int b) {;}
 void procedure3(int a, int b, int c) {;}
 void procedure4(int a, int b, int c, int d) {;}

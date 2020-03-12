@@ -36,6 +36,6 @@ int main(int argc, char const *argv[]){
 		}
 		end_time = RDTSC();
 	}
-	cout<<"total time " << (end_time - start_time)/2000 << endl;
+	cout<<"total time " << (double)(end_time - start_time)/2000.0 << endl;
 
 }

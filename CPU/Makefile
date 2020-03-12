@@ -1,4 +1,4 @@
-all: a_measOverhead b_procCall c_sysCall d_taskCreation e_contextSwitch
+all: a_measOverhead b_procCall c_sysCall d_taskCreation e_contextSwitch e_contextSwitch_pthread
 
 clean:
 	rm -f a_measOverhead b_procCall c_sysCall d_taskCreation e_contextSwitch
@@ -17,3 +17,6 @@ d_taskCreation: d_taskCreation.c
 
 e_contextSwitch: e_contextSwitch.c
 	gcc -O0 -o e_contextSwitch e_contextSwitch.c -Wall
+
+e_contextSwitch_pthread: e_contextSwitch_pthread.c
+	gcc -pthread -O0 -o e_contextSwitch_pthread e_contextSwitch_pthread.c -Wall

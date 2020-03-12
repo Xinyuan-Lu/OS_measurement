@@ -3,8 +3,8 @@ import time
 
 
 #Local host or other host
-HOST = "127.0.0.1"
-FILE_SIZE = 1024
+HOST = "35.164.222.23"
+FILE_SIZE = 4
 PORT = 8080
 
 skt = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -16,6 +16,5 @@ start = time.time()
 skt.sendall(fileData)
 end = time.time()
 result = (end - start) * 1000
-print("sending 1GB data costs {} ms".format(result))
-print("Network speed is {}GB/s".format(2000/result))
+print("sending 4M data costs {} ms".format(result))
 skt.close()
